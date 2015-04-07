@@ -21,20 +21,20 @@ heroImage.onload = function () {
 };
 heroImage.src = "images/hero.png";
 
-// Monster image
-var monsterReady = false;
-var monsterImage = new Image();
-monsterImage.onload = function () {
-	monsterReady = true;
+// Coin image
+var coinReady = false;
+var coinImage = new Image();
+coinImage.onload = function () {
+	coinReady = true;
 };
-monsterImage.src = "images/monster.png";
+coinImage.src = "images/coin.jpg";
 
 // Game objects
 var hero = {
 	speed: 256 // movement in pixels per second
 };
-var monster = {};
-var monstersCaught = 0;
+var coin = {};
+var coinsCaught = 0;
 
 // Handle keyboard controls
 var keysDown = {};
@@ -47,14 +47,14 @@ addEventListener("keyup", function (e) {
 	delete keysDown[e.keyCode];
 }, false);
 
-// Reset the game when the player catches a monster
+// Reset the game when the player catches a coin
 var reset = function () {
 	hero.x = canvas.width / 2;
 	hero.y = canvas.height / 2;
 
-	// Throw the monster somewhere on the screen randomly
-	monster.x = 32 + (Math.random() * (canvas.width - 64));
-	monster.y = 32 + (Math.random() * (canvas.height - 64));
+	// Throw the coin somewhere on the screen randomly
+	coin.x = 32 + (Math.random() * (canvas.width - 64));
+	coin.y = 32 + (Math.random() * (canvas.height - 64));
 };
 
 // Update game objects
@@ -74,12 +74,12 @@ var update = function (modifier) {
 
 	// Are they touching?
 	if (
-		hero.x <= (monster.x + 32)
-		&& monster.x <= (hero.x + 32)
-		&& hero.y <= (monster.y + 32)
-		&& monster.y <= (hero.y + 32)
+		hero.x <= (coin.x + 32)
+		&& coin.x <= (hero.x + 32)
+		&& hero.y <= (coin.y + 32)
+		&& coin.y <= (hero.y + 32)
 	) {
-		++monstersCaught;
+		++coinsCaught;
 		reset();
 	}
 };
@@ -94,8 +94,8 @@ var render = function () {
 		ctx.drawImage(heroImage, hero.x, hero.y);
 	}
 
-	if (monsterReady) {
-		ctx.drawImage(monsterImage, monster.x, monster.y);
+	if (coinReady) {
+		ctx.drawImage(coinImage, coin.x, coin.y);
 	}
 
 	// Score
@@ -103,7 +103,7 @@ var render = function () {
 	ctx.font = "24px Helvetica";
 	ctx.textAlign = "left";
 	ctx.textBaseline = "top";
-	ctx.fillText("Goblins caught: " + monstersCaught, 32, 32);
+	ctx.fillText("Coins caught: " + coinsCaught, 32, 32);
 };
 
 // The main game loop
